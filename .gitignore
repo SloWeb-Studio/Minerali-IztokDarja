@@ -1,0 +1,8 @@
+# Konfiguracijski ključi — ne smeju v git
+config.js
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
