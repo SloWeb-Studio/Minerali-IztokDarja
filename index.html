@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Kristalna zbirka</title>
+<title>Izi-Min</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
@@ -209,6 +209,29 @@ nav{position:fixed;top:0;left:0;right:0;z-index:900;height:62px;padding:0 2rem;d
 .feat-list li{display:flex;align-items:flex-start;gap:10px;font-size:14px;color:var(--text2);line-height:1.75}
 .feat-dot{width:5px;height:5px;border-radius:50%;background:var(--green);margin-top:9px;flex-shrink:0}
 
+/* ── DNEVNIK ── */
+.post-grid{columns:3;column-gap:14px}
+.post-card{break-inside:avoid;margin-bottom:14px;background:rgba(255,255,255,.6);border:0.5px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;transition:box-shadow .2s}
+.post-card:hover{box-shadow:0 6px 24px var(--shadow2)}
+.post-img{width:100%;display:block;object-fit:cover;max-height:340px}
+.post-body{padding:14px 16px 16px}
+.post-date{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);margin-bottom:5px}
+.post-caption{font-size:14px;color:var(--text2);line-height:1.75}
+.post-del{margin-top:10px;padding-top:10px;border-top:0.5px solid var(--border);text-align:right}
+.post-del button{background:none;border:none;font-size:11px;color:rgba(180,50,50,.5);cursor:pointer;font-family:'Jost',sans-serif;transition:color .2s}
+.post-del button:hover{color:rgba(180,50,50,1)}
+.post-loading{text-align:center;padding:3rem;color:var(--text3);font-size:14px;column-span:all}
+.post-empty{text-align:center;padding:3rem;color:var(--text3);font-size:14px}
+@media(max-width:768px){.post-grid{columns:2}}
+@media(max-width:480px){.post-grid{columns:1}}
+
+/* ── POST FORM ── */
+.pform-overlay{display:none;position:fixed;inset:0;background:rgba(40,38,28,.6);z-index:1100;align-items:center;justify-content:center;padding:1rem;backdrop-filter:blur(6px)}
+.pform-overlay.open{display:flex}
+.pform-modal{background:var(--bg);border:0.5px solid var(--border2);border-radius:var(--radius-xl);width:100%;max-width:460px;max-height:92vh;overflow-y:auto;padding:2rem;box-shadow:0 24px 80px rgba(40,38,28,.2)}
+.pform-head{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:1.5rem}
+.pform-head h3{font-family:'Playfair Display',serif;font-size:21px;color:var(--text)}
+
 /* ── NEGA ── */
 #nega{background:var(--bg2);padding:5rem 2rem}
 .care-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-top:2.5rem}
@@ -232,6 +255,23 @@ footer{background:var(--bg3);border-top:0.5px solid var(--border);padding:2.25re
 /* ── UPLOAD SPINNER ── */
 .upload-spinner{width:14px;height:14px;border:2px solid var(--border);border-top-color:var(--green);border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0}
 @keyframes spin{to{transform:rotate(360deg)}}
+
+/* ── AUTH ── */
+.auth-btn{padding:7px 14px;border:1px solid var(--border);border-radius:99px;font-size:12px;letter-spacing:.07em;text-transform:uppercase;cursor:pointer;background:none;font-family:'Jost',sans-serif;font-weight:500;transition:all .2s;display:flex;align-items:center;gap:6px;color:var(--text2)}
+.auth-btn:hover{border-color:var(--green);color:var(--green)}
+.auth-btn.out{border-color:var(--border-gold);color:var(--gold)}
+.auth-btn.out:hover{background:rgba(184,146,46,.06)}
+.login-overlay{display:none;position:fixed;inset:0;background:rgba(40,38,28,.6);z-index:1200;align-items:center;justify-content:center;padding:1rem;backdrop-filter:blur(6px)}
+.login-overlay.open{display:flex}
+.login-modal{background:var(--bg);border:0.5px solid var(--border2);border-radius:var(--radius-xl);width:100%;max-width:360px;padding:2rem;box-shadow:0 24px 80px rgba(40,38,28,.2)}
+.login-modal h3{font-family:'Playfair Display',serif;font-size:21px;color:var(--text);margin-bottom:.3rem}
+.login-modal p{font-size:13px;color:var(--text3);margin-bottom:1.5rem}
+.login-err{font-size:12px;color:rgba(180,50,50,.85);margin-top:.5rem;min-height:16px}
+/* edit-only elements hidden unless authed */
+.edit-only{display:none!important}
+body.authed .edit-only{display:flex!important}
+body.authed .edit-only-block{display:block!important}
+.edit-only-block{display:none!important}
 
 /* ── ANIM ── */
 .fi{opacity:0;transform:translateY(18px);transition:opacity .6s ease,transform .6s ease}
@@ -271,18 +311,35 @@ footer{background:var(--bg3);border-top:0.5px solid var(--border);padding:2.25re
       <polygon points="13,2 18,7 13,12 8,7" fill="rgba(59,107,53,.25)" stroke="#3b6b35" stroke-width=".6"/>
       <polygon points="13,12 18,19 13,24 8,19" fill="rgba(184,146,46,.2)" stroke="#b8922e" stroke-width=".6"/>
     </svg>
-    <span class="nav-logo-text">Kristalna zbirka</span>
+    <span class="nav-logo-text">Izi-Min</span>
   </a>
   <ul class="nav-links">
     <li><a href="#naslovna">Domov</a></li>
     <li><a href="#izpostavljeni">Priljubljeni</a></li>
     <li><a href="#zbirka">Zbirka</a></li>
     <li><a href="#o-nas">O nas</a></li>
+    <li><a href="#dnevnik">Dnevnik</a></li>
     <li><a href="#nega">Nega</a></li>
   </ul>
   <button class="nav-cta" onclick="scrollTo('#zbirka')">Oglej zbirko</button>
+  <button class="auth-btn" id="authNavBtn" onclick="handleAuthClick()">🔒 Prijava</button>
   <button class="hamburger" onclick="toggleMob()"><span></span><span></span><span></span></button>
 </nav>
+
+<!-- LOGIN MODAL -->
+<div class="login-overlay" id="loginOverlay" onclick="if(event.target===this)closeLogin()">
+  <div class="login-modal">
+    <h3>Prijava v Izi-Min</h3>
+    <p>Samo prijavljeni upravljalci lahko dodajajo in urejajo vsebino.</p>
+    <div class="field"><label>E-pošta</label><input type="email" id="loginEmail" placeholder="tvoj@email.com" onkeydown="if(event.key==='Enter')doLogin()"></div>
+    <div class="field"><label>Geslo</label><input type="password" id="loginPass" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()"></div>
+    <div class="login-err" id="loginErr"></div>
+    <div class="form-actions" style="margin-top:1rem">
+      <button class="fcancel" onclick="closeLogin()">Prekliči</button>
+      <button class="fsave" id="loginBtn" onclick="doLogin()">Prijavi se</button>
+    </div>
+  </div>
+</div>
 
 
 
@@ -291,6 +348,7 @@ footer{background:var(--bg3);border-top:0.5px solid var(--border);padding:2.25re
   <a href="#izpostavljeni" onclick="closeMob()">Priljubljeni</a>
   <a href="#zbirka" onclick="closeMob()">Zbirka</a>
   <a href="#o-nas" onclick="closeMob()">O nas</a>
+  <a href="#dnevnik" onclick="closeMob()">Dnevnik</a>
   <a href="#nega" onclick="closeMob()">Nega kristalov</a>
 </div>
 
@@ -298,8 +356,8 @@ footer{background:var(--bg3);border-top:0.5px solid var(--border);padding:2.25re
 <section id="naslovna">
   <div class="hero-glow"></div>
   <div class="hero-inner">
-    <div class="hero-badge">✦ Osebna zbirka mineralov &amp; kristalov</div>
-    <h1 class="hero-title">Zemeljske <em>lepote</em><br>iz vsega sveta</h1>
+    <div class="hero-badge">✦ Zbirka mineralov &amp; kristalov · Iztok</div>
+    <h1 class="hero-title">Dobrodošli v<br><em>Izi-Min</em></h1>
     <p class="hero-sub">Vsak kamen nosi edinstveno zgodbo — milijone let nastajanja, potovanje iz oddaljenih kotičkov planeta in lepoto, ki je ne more ponoviti nobena umetnost.</p>
     <div class="hero-btns">
       <a href="#zbirka" class="btn-green">Oglej si zbirko</a>
@@ -355,7 +413,7 @@ footer{background:var(--bg3);border-top:0.5px solid var(--border);padding:2.25re
           <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="6.5" cy="6.5" r="5"/><path d="M10.5 10.5 14 14"/></svg>
           <input type="text" id="searchInput" placeholder="Išči..." oninput="filterItems()">
         </div>
-        <button class="add-btn" onclick="openForm()">
+        <button class="add-btn edit-only" onclick="openForm()">
           <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M8 2v12M2 8h12"/></svg>
           Dodaj kamen
         </button>
@@ -370,22 +428,44 @@ footer{background:var(--bg3);border-top:0.5px solid var(--border);padding:2.25re
   <div class="container">
     <div class="about-grid">
       <div class="about-vis fi">
-        <div class="av-cell">💎</div>
-        <div class="av-cell">🔮</div>
+        <div class="av-cell">🪨</div>
+        <div class="av-cell">🌍</div>
         <div class="av-cell">✨</div>
       </div>
       <div class="about-text fi">
-        <div class="section-label">O zbirki</div>
-        <h2 class="section-title">Strast do<br>zemeljskih čudes</h2>
+        <div class="section-label">O ustanovitelju</div>
+        <h2 class="section-title">Pozdravljeni,<br>jaz sem <em style="font-style:italic;color:var(--green)">Iztok</em></h2>
         <div class="divider"></div>
-        <p style="font-size:15px;color:var(--text2);line-height:1.9">Naša zbirka mineralov in kristalov je plod let iskanja, potovanj in srečnih najdb. Vsak kamen ima svojo zgodbo — od sejmov mineralov po Evropi do malih prodajaln na Madagaskarju.</p>
+        <p style="font-size:15px;color:var(--text2);line-height:1.9;margin-bottom:1rem">Sem strasten zbiratelj mineralov, kristalov in kamnov z večletnimi izkušnjami. Moja pot se je začela z naključno najdbo prvega ametista na mineralnem sejmu — od takrat ni bilo povratka.</p>
+        <p style="font-size:15px;color:var(--text2);line-height:1.9">Kamne iščem po vsem svetu — od mineralnih sejmov v Münchnu in Denveru do malih rudnikov in lokalnih nabiralcev. Vsak kamen v zbirki ima svojo edinstveno zgodbo.</p>
         <ul class="feat-list">
-          <li><span class="feat-dot"></span>Kamni pridobljeni na mineralnih sejmih po Evropi in svetu</li>
-          <li><span class="feat-dot"></span>Vsak eksponat natančno dokumentiran z izvorom in lastnostmi</li>
-          <li><span class="feat-dot"></span>Posebna pozornost etičnemu pridobivanju mineralov</li>
-          <li><span class="feat-dot"></span>Zbirka se nenehno širi z novimi najdbami</li>
+          <li><span class="feat-dot"></span>Zbiratelj z več kot 10 leti izkušenj</li>
+          <li><span class="feat-dot"></span>Redno obiskujem mineralne sejme po Evropi in svetu</li>
+          <li><span class="feat-dot"></span>Posebna strast: minerali iz afriških in južnoameriških rudnikov</li>
+          <li><span class="feat-dot"></span>Vsak kamen skrbno dokumentiran in hranjen</li>
         </ul>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- DNEVNIK -->
+<section id="dnevnik" style="background:var(--bg2);padding:5rem 2rem">
+  <div class="container">
+    <div class="fi" style="display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:1rem;margin-bottom:2.5rem">
+      <div>
+        <div class="section-label">Iz terena</div>
+        <h2 class="section-title">Moj dnevnik</h2>
+        <p class="section-sub">Fotografije in zgodbe iz iskanja, sejmov in najdb.</p>
+        <div class="divider"></div>
+      </div>
+      <button class="add-btn edit-only" onclick="openPostForm()">
+        <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M8 2v12M2 8h12"/></svg>
+        Dodaj objavo
+      </button>
+    </div>
+    <div class="post-grid" id="postGrid">
+      <div class="post-loading">Nalagam objave...</div>
     </div>
   </div>
 </section>
@@ -413,16 +493,48 @@ footer{background:var(--bg3);border-top:0.5px solid var(--border);padding:2.25re
 <!-- FOOTER -->
 <footer>
   <div class="foot-inner">
-    <div class="foot-logo">Kristalna zbirka</div>
+    <div class="foot-logo">Izi-Min</div>
     <div class="foot-links">
       <a href="#naslovna">Domov</a>
       <a href="#izpostavljeni">Priljubljeni</a>
       <a href="#zbirka">Zbirka</a>
+      <a href="#o-nas">O nas</a>
       <a href="#nega">Nega</a>
     </div>
     <div class="foot-copy">© 2025 · Z ljubeznijo do mineralov</div>
   </div>
 </footer>
+
+<!-- POST FORM (dnevnik) -->
+<div class="pform-overlay" id="postFormOverlay" onclick="if(event.target===this)closePostForm()">
+  <div class="pform-modal">
+    <div class="pform-head">
+      <div><h3>Nova objava v dnevnik</h3></div>
+      <button class="fclose" onclick="closePostForm()">×</button>
+    </div>
+    <div class="field">
+      <label>Fotografija</label>
+      <div class="upload-area" id="postUploadArea" onclick="document.getElementById('postFileInput').click()">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        Klikni za nalaganje fotografije
+        <input type="file" id="postFileInput" accept="image/*" style="display:none" onchange="handlePostFile(event)">
+      </div>
+      <div id="postImgPreview" style="display:none;margin-top:8px;position:relative">
+        <img id="postImgThumb" style="width:100%;max-height:200px;object-fit:cover;border-radius:var(--radius);border:0.5px solid var(--border)" alt="predogled">
+        <button onclick="clearPostImg()" style="position:absolute;top:6px;right:6px;background:rgba(244,239,228,.9);border:0.5px solid var(--border);border-radius:50%;width:24px;height:24px;cursor:pointer;font-size:13px;line-height:24px;text-align:center">×</button>
+        <div class="upload-spinner" id="postSpinner" style="display:none;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%)"></div>
+      </div>
+    </div>
+    <div class="field">
+      <label>Besedilo / opis *</label>
+      <textarea id="postCaption" placeholder="Kje si bil, kaj si našel, kako je bilo..." style="min-height:100px"></textarea>
+    </div>
+    <div class="form-actions">
+      <button class="fcancel" onclick="closePostForm()">Prekliči</button>
+      <button class="fsave" onclick="savePost()">Objavi</button>
+    </div>
+  </div>
+</div>
 
 <!-- DETAIL MODAL -->
 <div class="overlay" id="detOverlay" onclick="if(event.target===this)closeDetail()">
@@ -475,16 +587,14 @@ footer{background:var(--bg3);border-top:0.5px solid var(--border);padding:2.25re
 <!-- Firebase SDK -->
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+<script src="config.js"></script>
 
 <script>
-// ── CONFIG (hardcoded) ────────────────────────────────────────────
-const CF_CLOUD = 'djzczu8gr';
-const CF_PRESET = 'm1default';
-const FB_CONFIG = {
-  apiKey: 'AIzaSyAAPQ6iA3XekmcoyuvGisqoAPcsgO5YWuc',
-  authDomain: 'minerali-18b1d.firebaseapp.com',
-  projectId: 'minerali-18b1d',
-};
+// ── CONFIG ────────────────────────────────────────────────────────
+const CF_CLOUD  = window.IZIMIN_CONFIG.cloudName;
+const CF_PRESET = window.IZIMIN_CONFIG.uploadPreset;
+const FB_CONFIG = window.IZIMIN_CONFIG.firebase;
 
 // ── STATE ─────────────────────────────────────────────────────────
 let items = [];
@@ -512,8 +622,51 @@ function initFirebase(){
   try{
     if(!firebase.apps.length) firebase.initializeApp(FB_CONFIG);
     db = firebase.firestore();
+    // Auth state listener
+    firebase.auth().onAuthStateChanged(user => {
+      if(user){
+        document.body.classList.add('authed');
+        document.getElementById('authNavBtn').textContent = '👤 Odjava';
+        document.getElementById('authNavBtn').classList.add('out');
+      } else {
+        document.body.classList.remove('authed');
+        document.getElementById('authNavBtn').textContent = '🔒 Prijava';
+        document.getElementById('authNavBtn').classList.remove('out');
+      }
+      renderGrid(); renderPosts();
+    });
     return true;
   } catch(e){ console.error(e); return false; }
+}
+
+// ── AUTH UI ───────────────────────────────────────────────────────
+function handleAuthClick(){
+  if(document.body.classList.contains('authed')){ firebase.auth().signOut(); }
+  else { openLogin(); }
+}
+function openLogin(){
+  document.getElementById('loginEmail').value='';
+  document.getElementById('loginPass').value='';
+  document.getElementById('loginErr').textContent='';
+  document.getElementById('loginOverlay').classList.add('open');
+  setTimeout(()=>document.getElementById('loginEmail').focus(),100);
+}
+function closeLogin(){ document.getElementById('loginOverlay').classList.remove('open'); }
+async function doLogin(){
+  const email=document.getElementById('loginEmail').value.trim();
+  const pass=document.getElementById('loginPass').value;
+  const errEl=document.getElementById('loginErr');
+  const btn=document.getElementById('loginBtn');
+  if(!email||!pass){ errEl.textContent='Vpiši e-pošto in geslo.'; return; }
+  btn.textContent='Prijavljam...'; btn.disabled=true; errEl.textContent='';
+  try{
+    await firebase.auth().signInWithEmailAndPassword(email,pass);
+    closeLogin();
+  } catch(e){
+    const msgs={'auth/user-not-found':'Uporabnik ne obstaja.','auth/wrong-password':'Napačno geslo.','auth/invalid-email':'Neveljavna e-pošta.','auth/too-many-requests':'Preveč poskusov. Počakaj malo.'};
+    errEl.textContent = msgs[e.code]||'Napaka pri prijavi.';
+  }
+  btn.textContent='Prijavi se'; btn.disabled=false;
 }
 
 function startListening(){
@@ -527,6 +680,7 @@ function startListening(){
     customTypes = doc.exists ? (doc.data().types||[]) : [];
     renderFilterBtns();
   });
+  startListeningPosts();
 }
 
 async function dbAdd(item){
@@ -615,8 +769,9 @@ function renderGrid(){
   if(!filtered.length){ g.innerHTML=`<div class="no-results">Ni najdenih kamnov.</div>`; return; }
   g.innerHTML=filtered.map(it=>{
     const cover=it.imgs&&it.imgs[0];
+    const isAuthed=document.body.classList.contains('authed');
     return `<div class="stone-card">
-      <button class="star-btn${it.starred?' starred':''}" onclick="toggleStar(event,'${it.id}')" title="${it.starred?'Odstrani':'Dodaj med priljubljene'}">${it.starred?'★':'☆'}</button>
+      ${isAuthed?`<button class="star-btn${it.starred?' starred':''}" onclick="toggleStar(event,'${it.id}')" title="${it.starred?'Odstrani':'Dodaj med priljubljene'}">${it.starred?'★':'☆'}</button>`:''}
       <div class="stone-img" onclick="openDetail('${it.id}')">${cover?`<img src="${cover}" alt="${it.name}">`:`<span class="stone-emoji">${it.emoji||'🪨'}</span>`}</div>
       <div class="stone-body" onclick="openDetail('${it.id}')">
         <div class="stone-type">${it.type}</div>
@@ -642,6 +797,7 @@ function openDetail(id){
   const coverHtml=coverImg?`<img src="${coverImg}" alt="${it.name}" id="detCoverImg">`:`<span class="det-cover-emoji">${it.emoji||'🪨'}</span>`;
   const galleryHtml=it.imgs&&it.imgs.length>1?it.imgs.map((src,i)=>`<div class="det-thumb${i===0?' active':''}" onclick="switchCover('${id}',${i},this)"><img src="${src}" alt="slika ${i+1}"></div>`).join(''):'';
   const starLabel=it.starred?'★ Priljubljen':'☆ Dodaj med priljubljene';
+  const isAuthed=document.body.classList.contains('authed');
   document.getElementById('detModal').innerHTML=`
     <button class="det-close" onclick="closeDetail()">×</button>
     <div class="det-cover" id="detCover">${coverHtml}</div>
@@ -651,10 +807,10 @@ function openDetail(id){
       <span class="det-typebadge">${it.type}</span>
       <div class="det-grid">${cells}</div>
       ${it.desc?`<div class="det-desc">${it.desc}</div>`:''}
-      <div class="det-foot">
+      ${isAuthed?`<div class="det-foot">
         <button class="det-star-toggle${it.starred?' on':''}" id="detStarBtn" onclick="toggleStarModal('${id}')">${starLabel}</button>
         <button class="del-btn" onclick="deleteItem('${id}')">Izbriši</button>
-      </div>
+      </div>`:''}
     </div>`;
   document.getElementById('detOverlay').classList.add('open');
 }
@@ -754,11 +910,98 @@ function renderFilterBtns(){
     [...base,...customTypes].map(t=>`<button class="fbtn${activeFilter===t?' on':''}" onclick="setFilter('${t}',this)">${labels[t]||t}</button>`).join('');
 }
 
+// ── DNEVNIK ──────────────────────────────────────────────────────
+let posts = [];
+let postImg = {url:'', uploading:false};
+
+function startListeningPosts(){
+  if(!db) return;
+  db.collection('dnevnik').orderBy('dateAdded','desc').onSnapshot(snap => {
+    posts = snap.docs.map(d => ({id:d.id, ...d.data()}));
+    renderPosts();
+  }, err => console.error('Dnevnik:', err));
+}
+
+function renderPosts(){
+  const g = document.getElementById('postGrid');
+  if(!g) return;
+  if(!posts.length){
+    g.innerHTML = `<div class="post-empty">Še ni objav. Klikni "Dodaj objavo" za prvo!</div>`;
+    return;
+  }
+  g.innerHTML = posts.map(p => {
+    const d = p.dateAdded ? new Date(p.dateAdded.seconds*1000) : new Date();
+    const dateStr = d.toLocaleDateString('sl-SI', {day:'numeric',month:'long',year:'numeric'});
+    return `<div class="post-card fi">
+      ${p.imgUrl ? `<img class="post-img" src="${p.imgUrl}" alt="objava">` : ''}
+      <div class="post-body">
+        <div class="post-date">${dateStr}</div>
+        <div class="post-caption">${p.caption||''}</div>
+        ${document.body.classList.contains('authed')?`<div class="post-del"><button onclick="deletePost('${p.id}')">Izbriši</button></div>`:''}
+      </div>
+    </div>`;
+  }).join('');
+  // re-observe new .fi elements
+  document.querySelectorAll('.post-card.fi:not(.vis)').forEach(el => obs.observe(el));
+}
+
+function openPostForm(){
+  postImg = {url:'', uploading:false};
+  document.getElementById('postCaption').value = '';
+  document.getElementById('postUploadArea').style.display = 'block';
+  document.getElementById('postImgPreview').style.display = 'none';
+  document.getElementById('postFormOverlay').classList.add('open');
+}
+function closePostForm(){ document.getElementById('postFormOverlay').classList.remove('open'); }
+
+function handlePostFile(e){
+  const file = e.target.files[0]; if(!file) return;
+  postImg = {url:'', uploading:true};
+  document.getElementById('postUploadArea').style.display = 'none';
+  document.getElementById('postImgPreview').style.display = 'block';
+  document.getElementById('postSpinner').style.display = 'block';
+  document.getElementById('postImgThumb').style.opacity = '0.4';
+  // show local preview immediately
+  const reader = new FileReader();
+  reader.onload = ev => { document.getElementById('postImgThumb').src = ev.target.result; };
+  reader.readAsDataURL(file);
+  uploadToCloudinary(file).then(url => {
+    postImg = {url, uploading:false};
+    document.getElementById('postSpinner').style.display = 'none';
+    document.getElementById('postImgThumb').style.opacity = '1';
+    document.getElementById('postImgThumb').src = url;
+  }).catch(() => { postImg = {url:'', uploading:false}; alert('Napaka pri nalaganju slike.'); clearPostImg(); });
+  e.target.value = '';
+}
+
+function clearPostImg(){
+  postImg = {url:'', uploading:false};
+  document.getElementById('postUploadArea').style.display = 'block';
+  document.getElementById('postImgPreview').style.display = 'none';
+}
+
+async function savePost(){
+  const caption = document.getElementById('postCaption').value.trim();
+  if(!caption){ alert('Vpiši besedilo!'); return; }
+  if(postImg.uploading){ alert('Počakaj — slika se še nalaga...'); return; }
+  await db.collection('dnevnik').add({
+    caption,
+    imgUrl: postImg.url || '',
+    dateAdded: firebase.firestore.FieldValue.serverTimestamp(),
+  });
+  closePostForm();
+}
+
+async function deletePost(id){
+  if(!confirm('Izbriši to objavo?')) return;
+  await db.collection('dnevnik').doc(id).delete();
+}
+
 // ── NAV UTILS ────────────────────────────────────────────────────
 function scrollTo(sel){ document.querySelector(sel).scrollIntoView({behavior:'smooth'}); }
 function toggleMob(){ document.getElementById('mobMenu').classList.toggle('open'); }
 function closeMob(){ document.getElementById('mobMenu').classList.remove('open'); }
-document.addEventListener('keydown',e=>{ if(e.key==='Escape'){ closeDetail(); closeForm(); } });
+document.addEventListener('keydown',e=>{ if(e.key==='Escape'){ closeDetail(); closeForm(); closePostForm(); closeLogin(); } });
 
 // ── INTERSECTION OBSERVER ────────────────────────────────────────
 const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('vis');});},{threshold:0.08});
